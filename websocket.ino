@@ -28,7 +28,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     data[len] = 0;
     wsMessage = (char*)data;
     notifyClients(wsMessage);
-    jsonHandler(wsMessage);
+    componentHandler(wsMessage);
   }
 }
 
@@ -38,6 +38,22 @@ void notifyClients(String message) {
 }
 
 // Handling json string from client
-void jsonHandler(String jsonString) {
-  
+void componentHandler(String jsonString) {
+  DynamicJsonDocument doc(1024);
+
+  // Store websocket message as json object
+  deserializeJson(doc, jsonString);
+  JsonObject obj = doc.as<JsonObject>();
+
+  String component = obj[String("component")];
+  String value = obj[String("value")];
+
+  if (component == "motors") {
+    runMotors(value);
+    return;
+  }
+
+  // TODO: Control other components
+
+  Serial.println("Unknown component to set");
 }
