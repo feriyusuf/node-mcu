@@ -14,11 +14,9 @@ void runMotors(JsonObject value) {
   JsonArray pwm = value[String("pwm")];
   
   int fL = pwm[0];
-  int fR = 0;
-  int bL = 0;
-  int bR = 0;
-
-  Serial.println(fL);
+  int fR = pwm[1];
+  int bL = pwm[2];
+  int bR = pwm[3];
 }
 
 /**

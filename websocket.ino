@@ -29,6 +29,8 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     wsMessage = (char*)data;
     notifyClients(wsMessage);
     componentHandler(wsMessage);
+
+    Serial.println(wsMessage);
   }
 }
 
