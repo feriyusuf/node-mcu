@@ -46,10 +46,14 @@ void componentHandler(String jsonString) {
   JsonObject obj = doc.as<JsonObject>();
 
   String component = obj[String("component")];
-  String value = obj[String("value")];
+  JsonObject value = obj[String("value")];
 
   if (component == "motors") {
     runMotors(value);
+    return;
+  }
+    
+  if (component == "underlamp") {
     return;
   }
 
