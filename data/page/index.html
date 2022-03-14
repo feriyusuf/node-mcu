@@ -37,6 +37,7 @@
 
     function send(x, y, speed, angle) {
         const power = speed / 100
+        const maxPwm = 255
 
         const pwm = {
             frontLeft: 0,
@@ -52,7 +53,7 @@
         // Straight Forward
         if (x === 0 && (angle === 90 || angle === 270)) {
             Object.keys(pwm).forEach(key => {
-                pwm[key] = parseInt((255 * power).toString())
+                pwm[key] = parseInt((maxPwm * power).toString())
             })
         }
 
@@ -60,19 +61,29 @@
         if (y < 0) {
             // Left
             if (x < 0) {
-                console.log("Forward Left")
-                /**
-                 * Antara 90 dan 180 = 135
-                 *
-                 */
+                const angleLeftFront = angle - 90
+                const rightPwmFront = (angleLeftFront / 90) * (power * maxPwm)
 
-                pwm.frontRight = 255 * power
+                pwm.frontRight = parseInt(rightPwmFront.toString())
+                pwm.rearRight = pwm.frontRight
+
+                pwm.frontLeft = parseInt(((maxPwm - pwm.frontRight) * power).toString())
+                pwm.rearLeft = pwm.frontLeft
             }
 
             // Right
             if (x > 0) {
-                console.log("Forward Right")
+                const angleRightFront = angle
+                const rightPwmFront = (angleRightFront / 90) * (power * maxPwm)
+
+                pwm.frontRight = parseInt(rightPwmFront.toString())
+                pwm.rearRight = pwm.frontRight
+
+                pwm.frontLeft = parseInt(((maxPwm - pwm.frontRight) * power).toString())
+                pwm.rearLeft = pwm.frontLeft
             }
+
+            console.log(pwm)
         }
 
         // Backward
