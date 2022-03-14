@@ -1,8 +1,3 @@
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-
 void pageSetup() {
   if (!SPIFFS.begin()){
     Serial.println("Failed to open file");

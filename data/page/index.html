@@ -36,45 +36,47 @@
     };
 
     function send(x, y, speed, angle) {
-        const power = speed / 100
-        const maxPwm = 255
+        setTimeout(() => {
+            const power = speed / 100
+            const maxPwm = 255
 
-        const pwm = {
-            frontLeft: 0,
-            frontRight: 0,
-            rearLeft: 0,
-            rearRight: 0
-        }
+            const pwm = {
+                frontLeft: 0,
+                frontRight: 0,
+                rearLeft: 0,
+                rearRight: 0
+            }
 
-        if (angle <= 90) {
-            pwm.frontRight = parseInt(((angle / 90) * maxPwm * power).toString())
-            pwm.frontLeft = parseInt((maxPwm * power).toString())
-        }
+            if (angle <= 90) {
+                pwm.frontRight = parseInt(((angle / 90) * maxPwm * power).toString())
+                pwm.frontLeft = parseInt((maxPwm * power).toString())
+            }
 
 
-        if (angle <= 180 && angle > 90) {
-            pwm.frontLeft = parseInt((((90 + (90 - angle)) / 90) * maxPwm * power).toString())
-            pwm.frontRight = parseInt((maxPwm * power).toString())
-        }
+            if (angle <= 180 && angle > 90) {
+                pwm.frontLeft = parseInt((((90 + (90 - angle)) / 90) * maxPwm * power).toString())
+                pwm.frontRight = parseInt((maxPwm * power).toString())
+            }
 
-        if (angle <= 270 && angle > 180) {
-            pwm.frontLeft = parseInt((((angle - 180) / 90) * maxPwm * power).toString())
-            pwm.frontRight = parseInt((maxPwm * power).toString())
-        }
+            if (angle <= 270 && angle > 180) {
+                pwm.frontLeft = parseInt((((angle - 180) / 90) * maxPwm * power).toString())
+                pwm.frontRight = parseInt((maxPwm * power).toString())
+            }
 
-        if (angle > 270) {
-            pwm.frontRight = parseInt(((((270 - angle) + 90) / 90) * maxPwm * power).toString())
-            pwm.frontLeft = parseInt((maxPwm * power).toString())
-        }
+            if (angle > 270) {
+                pwm.frontRight = parseInt(((((270 - angle) + 90) / 90) * maxPwm * power).toString())
+                pwm.frontLeft = parseInt((maxPwm * power).toString())
+            }
 
-        pwm.rearLeft = pwm.frontLeft
-        pwm.rearRight = pwm.frontRight
+            pwm.rearLeft = pwm.frontLeft
+            pwm.rearRight = pwm.frontRight
 
-        const direction = y < 0 && 1 || 0
-        const value = {direction, pwm: Object.values(pwm)}
-        const message = {component: "motors", value}
+            const direction = y < 0 && 1 || 0
+            const value = {direction, pwm: Object.values(pwm)}
+            const message = {component: "motors", value}
 
-        connection.send(JSON.stringify(message));
+            connection.send(JSON.stringify(message));
+        }, 1000)
     }
 </script>
 
