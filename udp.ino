@@ -8,8 +8,24 @@ void udpLoop() {
     {
       packet[len] = '\0';
     }
-    Serial.print("Packet received: ");
-    Serial.println(packet);
+
+    DynamicJsonDocument doc(1024);
+
+    // Store websocket message as json object
+    deserializeJson(doc, packet);
+    JsonObject obj = doc.as<JsonObject>();
+  
+    String component = obj[String("component")];
+    JsonArray value = obj[String("value")];
+  
+    if (component == "motors") {
+      runMotors(value);
+      return;
+    }
+      
+    if (component == "underlamp") {
+      return;
+    }
 
     // Send return packet
     UDP.beginPacket(UDP.remoteIP(), UDP.remotePort());

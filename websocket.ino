@@ -48,7 +48,7 @@ void componentHandler(String jsonString) {
   JsonObject obj = doc.as<JsonObject>();
 
   String component = obj[String("component")];
-  JsonObject value = obj[String("value")];
+  JsonArray value = obj[String("value")];
 
   if (component == "motors") {
     runMotors(value);

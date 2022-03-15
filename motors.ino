@@ -9,14 +9,21 @@
     }
   }
  */
-void runMotors(JsonObject value) {
-  int direction = value[String("direction")];
-  JsonArray pwm = value[String("pwm")];
+void runMotors(JsonArray value) {
+  int direction = value[0];  
+  int fl = value[1];
+  int fr = value[2];
+  int rl = value[3];
+  int rr = value[4];
+
+  Serial.println("\n==========================");
+  Serial.println(direction);
+  Serial.println(fl);
+  Serial.println(fr);
+  Serial.println(rl);
+  Serial.println(rr);
+  Serial.println("==========================\n");
   
-  int fL = pwm[0];
-  int fR = pwm[1];
-  int bL = pwm[2];
-  int bR = pwm[3];
 }
 
 /**
