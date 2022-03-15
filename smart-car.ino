@@ -22,6 +22,7 @@ String wsMessage = "";
 
 void setup() {
   Serial.begin(9600);
+  sensorsSetup();
   wifiSetup();
   pageSetup();
 //  webSocketSetup();
@@ -30,5 +31,6 @@ void setup() {
 }
 
 void loop() {
+  sensorsLoop();
   udpLoop();
 }
