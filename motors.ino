@@ -16,14 +16,8 @@ void runMotors(JsonArray value) {
   int rl = value[3];
   int rr = value[4];
 
-  Serial.println("\n==========================");
-  Serial.println(direction);
-  Serial.println(fl);
-  Serial.println(fr);
-  Serial.println(rl);
-  Serial.println(rr);
-  Serial.println("==========================\n");
   
+  stopMotors();
 }
 
 /**
@@ -31,4 +25,8 @@ void runMotors(JsonArray value) {
  */
 void motorsSetup() {
 
+}
+
+void stopMotors() {
+  Serial.println("STOP");
 }
