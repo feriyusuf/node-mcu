@@ -4,21 +4,22 @@
 #include <FS.h>
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
+#include <PCF8574.h>
 
-// Wifi
-#define WIFI_SSID "FYZone Portable"
-#define WIFI_PASSWORD "numpangatuh"
-#define UDP_PORT 4210
+/**
+ * IO Used
+ * D1 PCF8574
+ * D2 PCF8574
+ * D3 Speed Motor Left
+ * D4 Speed Motor Right
+ * D5 Humadity and Temperature Sensor
+ * D6 Distance Input
+ * D7 Distance Output
+ */
 
-// UDP
-WiFiUDP UDP;
-char packet[255];
-char reply[] = "Packet received!";
 
-// Web Server and Web Socket
-AsyncWebServer server(80);
-AsyncWebSocket ws("/ws");
-String wsMessage = "";
+// IO Extender (PCF8574)
+PCF8574 ioExtendOne(0x20);
 
 void setup() {
   Serial.begin(9600);

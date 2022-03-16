@@ -1,8 +1,11 @@
+// UDP
+WiFiUDP UDP;
+char packet[255];
+char reply[] = "Packet received!";
+
 void udpLoop() {
   int packetSize = UDP.parsePacket();
   if (packetSize) {
-    Serial.print("Received packet! Size: ");
-    Serial.println(packetSize); 
     int len = UDP.read(packet, 255);
     if (len > 0)
     {

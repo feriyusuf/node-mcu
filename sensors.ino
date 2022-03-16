@@ -1,9 +1,9 @@
 #include "DHT.h"
 
-#define DHTPIN D1
+#define DHTPIN D5
 #define DHTTYPE DHT11
-#define ULTRA_ECHO_PIN D2
-#define ULTRA_TRIGGER_PIN D3
+#define ULTRA_ECHO_PIN D6
+#define ULTRA_TRIGGER_PIN D7
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -18,13 +18,6 @@ void sensorsSetup() {
 
 void sensorsLoop() {
     
-    Serial.println();
-    Serial.print("Distance: "); Serial.println(getDistance());
-    Serial.print("Humadity: "); Serial.println(getHumadity());
-    Serial.print("Temperature: "); Serial.println(getTemperature());
-    Serial.println();
-    
-    delay(1000);
 }
 
 float getHumadity() {

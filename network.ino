@@ -1,3 +1,13 @@
+// Wifi
+#define WIFI_SSID "FYZone Portable"
+#define WIFI_PASSWORD "numpangatuh"
+#define UDP_PORT 4210
+
+// Web Server and Web Socket
+AsyncWebServer server(80);
+AsyncWebSocket ws("/ws");
+String wsMessage = "";
+
 void wifiSetup() {
   Serial.print("Connecting to ");
   Serial.println(WIFI_SSID);
