@@ -1,22 +1,23 @@
-#define ENA_LEFT D3
-#define ENA_RIGHT D4
 
-#define IN_LEFT_1 P0
-#define IN_LEFT_2 P1
-#define IN_RIGHT_1 P2
-#define IN_RIGHT_2 P3
+#define RIGHT_MOTOR_FORWARD   P3  /* GPIO15(D8) -> IN1  */
+#define RIGHT_MOTOR_BACKWARD  P2  /* GPIO13(D7) -> IN2  */
+#define LEFT_MOTOR_FORWARD    P1  /* GPIO2(D2) -> IN3   */
+#define LEFT_MOTOR_BACKWARD   P0  /* GPIO0(D3) -> IN4   */
+
+#define RIGHT_MOTOR_ENABLE    D7  /* GPIO14(D5) -> Motor-A Enable */
+#define LEFT_MOTOR_ENABLE     D8  /* GPIO12(D6) -> Motor-B Enable */
 
 /**
  * call from setup();
  */
 void motorsSetup() {
-  pinMode(ENA_LEFT, OUTPUT);
-  pinMode(ENA_RIGHT, OUTPUT);
-
-  ioExtendOne.pinMode(IN_LEFT_1, OUTPUT);
-  ioExtendOne.pinMode(IN_LEFT_2, OUTPUT);
-  ioExtendOne.pinMode(IN_RIGHT_1, OUTPUT);
-  ioExtendOne.pinMode(IN_RIGHT_2, OUTPUT);
+  ioExtendOne.pinMode(LEFT_MOTOR_FORWARD,  OUTPUT);
+  ioExtendOne.pinMode(RIGHT_MOTOR_FORWARD,  OUTPUT);
+  ioExtendOne.pinMode(LEFT_MOTOR_BACKWARD,  OUTPUT); 
+  ioExtendOne.pinMode(RIGHT_MOTOR_BACKWARD,  OUTPUT);
+  
+  pinMode(LEFT_MOTOR_ENABLE,  OUTPUT);
+  pinMode(RIGHT_MOTOR_ENABLE,  OUTPUT);
 }
 
 void runMotors(JsonArray value) {
@@ -26,64 +27,59 @@ void runMotors(JsonArray value) {
   int rl = value[3];
   int rr = value[4];
 
+  if (fr == 0 && rr == 0) {    
+    stopMotors();
+    return;
+  }
+
   if (direction == 0) {
-    forward(fl, fr, rl, rr);
-    Serial.println();
-    Serial.println("Forward");
+    forward(fl,  fr,  rl,  rr);
   }
 
   if (direction == 1) {
-    backward(fl, fr, rl, rr);
-    Serial.println("Backward");
+    backward(fl,  fr,  rl,  rr);
   }
 
+  Serial.println();
   Serial.print("Speed Front Left: ");
   Serial.println(fl);
   Serial.print("Speed Front Right: ");
   Serial.println(fr);
-  Serial.print("Speed Rear Left: ");
-  Serial.println(rr);
-  Serial.print("Speed Rear Right: ");
-  Serial.println(rl);
+  Serial.println();
   
 }
 
-void forward(int fl, int fr, int rl, int rr) {
-  // Direction
-  ioExtendOne.digitalWrite(IN_LEFT_1, HIGH);
-  ioExtendOne.digitalWrite(IN_RIGHT_1, HIGH);
-  ioExtendOne.digitalWrite(IN_LEFT_2, LOW);
-  ioExtendOne.digitalWrite(IN_RIGHT_2, LOW);
+void forward (int fl,  int fr,  int rl,  int rr){
+  analogWrite(LEFT_MOTOR_ENABLE,  rl);
+  analogWrite(RIGHT_MOTOR_ENABLE,  rr);
 
-  // PWM
-  analogWrite(ENA_LEFT, fl);
-  analogWrite(ENA_RIGHT, fr);
-
-  stopMotors();
+  ioExtendOne.digitalWrite(LEFT_MOTOR_FORWARD, HIGH);
+  ioExtendOne.digitalWrite(RIGHT_MOTOR_FORWARD, LOW);
+  ioExtendOne.digitalWrite(LEFT_MOTOR_BACKWARD, LOW);
+  ioExtendOne.digitalWrite(RIGHT_MOTOR_BACKWARD, HIGH);
+    
+  Serial.println("Forward");
 }
 
-void backward(int fl, int fr, int tl, int rr) {
- // Direction
-  ioExtendOne.digitalWrite(IN_LEFT_1, LOW);
-  ioExtendOne.digitalWrite(IN_RIGHT_1, LOW);
-  ioExtendOne.digitalWrite(IN_LEFT_2, HIGH);
-  ioExtendOne.digitalWrite(IN_RIGHT_2, HIGH);
-
-  // PWM
-  analogWrite(ENA_LEFT, fl);
-  analogWrite(ENA_RIGHT, fr);
-
-  stopMotors();
+void backward (int fl,  int fr,  int rl,  int rr){
+  analogWrite(LEFT_MOTOR_ENABLE,  fl);
+  analogWrite(RIGHT_MOTOR_ENABLE,  fr);
+  
+  ioExtendOne.digitalWrite(LEFT_MOTOR_FORWARD, LOW);
+  ioExtendOne.digitalWrite(RIGHT_MOTOR_FORWARD, HIGH);
+  ioExtendOne.digitalWrite(LEFT_MOTOR_BACKWARD, HIGH);
+  ioExtendOne.digitalWrite(RIGHT_MOTOR_BACKWARD, LOW);
+  
+  Serial.println("Backward");
 }
 
-void stopMotors() {
-   ioExtendOne.digitalWrite(IN_LEFT_1, LOW);
-   ioExtendOne.digitalWrite(IN_RIGHT_1, LOW);
-   ioExtendOne.digitalWrite(IN_LEFT_2, LOW);
-   ioExtendOne.digitalWrite(IN_RIGHT_2, LOW);
-   
-   digitalWrite(ENA_LEFT, LOW);
-   digitalWrite(ENA_RIGHT, LOW);
+void stopMotors(){
+  digitalWrite(LEFT_MOTOR_ENABLE, LOW);
+  digitalWrite(RIGHT_MOTOR_ENABLE, LOW);
 
-   Serial.println("Stop");
+  ioExtendOne.digitalWrite(LEFT_MOTOR_FORWARD, LOW);
+  ioExtendOne.digitalWrite(LEFT_MOTOR_BACKWARD, LOW);
+  ioExtendOne.digitalWrite(RIGHT_MOTOR_FORWARD, LOW);
+  ioExtendOne.digitalWrite(RIGHT_MOTOR_BACKWARD, LOW);
+
 }

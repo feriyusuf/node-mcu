@@ -10,11 +10,6 @@
  * IO Used
  * D1 PCF8574
  * D2 PCF8574
- * D3 Speed Motor Left
- * D4 Speed Motor Right
- * D5 Humadity and Temperature Sensor
- * D6 Distance Input
- * D7 Distance Output
  */
 
 
@@ -23,15 +18,17 @@ PCF8574 ioExtendOne(0x20);
 
 void setup() {
   Serial.begin(9600);
-  sensorsSetup();
+  ioExtendOne.begin();
+  
   wifiSetup();
-  pageSetup();
+//  pageSetup();
 //  webSocketSetup();
   motorsSetup();
-  udpSetup();
+  udpSetup();  
+//  sensorsSetup();
 }
 
 void loop() {
-  sensorsLoop();
   udpLoop();
+//  sensorsLoop();
 }

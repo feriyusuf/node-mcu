@@ -17,7 +17,6 @@ void sensorsSetup() {
 }
 
 void sensorsLoop() {
-    
 }
 
 float getHumadity() {
