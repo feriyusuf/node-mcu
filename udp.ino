@@ -20,14 +20,13 @@ void udpLoop() {
   
     String component = obj[String("component")];
     JsonArray value = obj[String("value")];
-  
+
     if (component == "motors") {
       runMotors(value);
-      return;
-    }
-      
-    if (component == "underlamp") {
-      return;
+    } else if (component == "underlamp") {
+      dynamicLamps(value);
+    } else {
+      Serial.println("Unknown Component");
     }
 
     // Send return packet

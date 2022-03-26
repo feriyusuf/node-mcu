@@ -1,9 +1,10 @@
 #include "DHT.h"
 
-#define DHTPIN D5
-#define DHTTYPE DHT11
-#define ULTRA_ECHO_PIN D6
-#define ULTRA_TRIGGER_PIN D7
+
+#define DHTTYPE           DHT11
+#define DHTPIN            D5
+#define ULTRA_ECHO_PIN    D6
+#define ULTRA_TRIGGER_PIN P4
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -12,7 +13,7 @@ void sensorsSetup() {
   dht.begin();
 
   // Ultra Sonic Distance Sensor
-  pinMode(ULTRA_TRIGGER_PIN, OUTPUT);
+  ioExtendOne.pinMode(ULTRA_TRIGGER_PIN, OUTPUT);
   pinMode(ULTRA_ECHO_PIN, INPUT);
 }
 
@@ -29,11 +30,11 @@ float getTemperature() {
 
 long getDistance() {
   long duration, jarak;
-  digitalWrite(ULTRA_TRIGGER_PIN, LOW);
+  ioExtendOne.digitalWrite(ULTRA_TRIGGER_PIN, LOW);
   delayMicroseconds(2); 
-  digitalWrite(ULTRA_TRIGGER_PIN, HIGH);
+  ioExtendOne.digitalWrite(ULTRA_TRIGGER_PIN, HIGH);
   delayMicroseconds(10); 
-  digitalWrite(ULTRA_TRIGGER_PIN, LOW);
+  ioExtendOne.digitalWrite(ULTRA_TRIGGER_PIN, LOW);
   duration = pulseIn(ULTRA_ECHO_PIN, HIGH);
   jarak = (duration/2) / 29.1;
   

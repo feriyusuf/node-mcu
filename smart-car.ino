@@ -10,6 +10,18 @@
  * IO Used
  * D1 PCF8574
  * D2 PCF8574
+ * D3 --
+ * D4 NeoPixel Input
+ * D5 Humadity & Temperature Sensor
+ * D6 Ultrasonic Echo (Output)
+ * D7 Motor Right
+ * D8 Notor Left
+ * 
+ * 0x20 P0 Motor Left Backward
+ * 0x20 P1 Motor Left Forward
+ * 0x20 P2 Motor Right Backward
+ * 0x20 P3 Motor Right Forward
+ * 0x20 P4 Ultra Sonic Trigger (Input)
  */
 
 
@@ -21,14 +33,12 @@ void setup() {
   ioExtendOne.begin();
   
   wifiSetup();
-//  pageSetup();
-//  webSocketSetup();
+  sensorsSetup();
   motorsSetup();
+  lampsSetup();
   udpSetup();  
-//  sensorsSetup();
 }
 
 void loop() {
   udpLoop();
-//  sensorsLoop();
 }

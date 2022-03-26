@@ -1,4 +1,3 @@
-
 #define RIGHT_MOTOR_FORWARD   P3  /* GPIO15(D8) -> IN1  */
 #define RIGHT_MOTOR_BACKWARD  P2  /* GPIO13(D7) -> IN2  */
 #define LEFT_MOTOR_FORWARD    P1  /* GPIO2(D2) -> IN3   */
@@ -20,16 +19,21 @@ void motorsSetup() {
   pinMode(RIGHT_MOTOR_ENABLE,  OUTPUT);
 }
 
-void runMotors(JsonArray value) {
+long runMotors(JsonArray value) {
   int direction = value[0];  
   int fl = value[1];
   int fr = value[2];
   int rl = value[3];
   int rr = value[4];
 
+  if (getDistance() < 40 && direction == 0) {
+    stopMotors();
+    return getDistance();
+  }
+
   if (fr == 0 && rr == 0) {    
     stopMotors();
-    return;
+    return getDistance();
   }
 
   if (direction == 0) {
@@ -46,7 +50,8 @@ void runMotors(JsonArray value) {
   Serial.print("Speed Front Right: ");
   Serial.println(fr);
   Serial.println();
-  
+
+  return getDistance();
 }
 
 void forward (int fl,  int fr,  int rl,  int rr){
@@ -58,7 +63,7 @@ void forward (int fl,  int fr,  int rl,  int rr){
   ioExtendOne.digitalWrite(LEFT_MOTOR_BACKWARD, LOW);
   ioExtendOne.digitalWrite(RIGHT_MOTOR_BACKWARD, HIGH);
     
-  Serial.println("Forward");
+  neoAllRgb(0, 0, 127);
 }
 
 void backward (int fl,  int fr,  int rl,  int rr){
@@ -70,7 +75,7 @@ void backward (int fl,  int fr,  int rl,  int rr){
   ioExtendOne.digitalWrite(LEFT_MOTOR_BACKWARD, HIGH);
   ioExtendOne.digitalWrite(RIGHT_MOTOR_BACKWARD, LOW);
   
-  Serial.println("Backward");
+  neoAllRgb(0, 100, 50);
 }
 
 void stopMotors(){
@@ -82,4 +87,5 @@ void stopMotors(){
   ioExtendOne.digitalWrite(RIGHT_MOTOR_FORWARD, LOW);
   ioExtendOne.digitalWrite(RIGHT_MOTOR_BACKWARD, LOW);
 
+ neoAllRgb(127, 0, 0);
 }
